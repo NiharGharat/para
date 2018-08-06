@@ -6,6 +6,7 @@ read -e -p "New version: " ver
 read -e -p "New dev version: " devver
 
 sed -i -e "s/PARA_VERSION=.*/PARA_VERSION="\"$ver\"" \\\/g" Dockerfile && \
+sed -i -e "s/PARA_VERSION=.*/PARA_VERSION="\"$ver\"" \\\/g" Dockerfile-base && \
 
 git add -A && git commit -m "Release v$ver." && git push origin master && \
 
@@ -16,8 +17,9 @@ echo "v$ver" > changelog.txt && \
 echo "" >> changelog.txt && \
 git log $lastver..HEAD --oneline >> changelog.txt && \
 echo "" >> changelog.txt && \
-echo "" >> changelog.txt && \
 echo "### :package: [Download JAR](https://oss.sonatype.org/service/local/repositories/releases/content/com/erudika/para-jar/${ver}/para-jar-${ver}.jar)" >> changelog.txt && \
+echo "" >> changelog.txt && \
+echo "### :package: [Download WAR](https://oss.sonatype.org/service/local/repositories/releases/content/com/erudika/para-war/${ver}/para-war-${ver}.war)" >> changelog.txt && \
 hub release create -F changelog.txt "v$ver" && \
 rm changelog.txt
 

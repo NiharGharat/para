@@ -7,7 +7,8 @@ RUN apk --update add git openssh maven && \
     rm /var/cache/apk/*
 
 ENV BOOT_SLEEP=0 \
-    JAVA_OPTS=""
+    JAVA_OPTS="" \
+    PARA_VERSION="1.30.0"
 
 RUN addgroup -S para && adduser -S -G para para && \
 	mkdir -p /para/lib && \
@@ -20,6 +21,7 @@ USER para
 WORKDIR /para
 
 RUN git clone --depth=1 https://github.com/Erudika/para /para/clone && \
+	git checkout v${PARA_VERSION} && \
 	cd /para/clone/para-jar && \
 	mvn -Pbase clean package && \
 	mv target/para-base-*.jar /para/ && \
